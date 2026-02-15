@@ -1,6 +1,35 @@
+'use client';
+
 import Link from 'next/link';
+import { useState } from 'react';
 
 export default function Home() {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle'|'loading'|'success'|'error'>('idle');
+  const [count, setCount] = useState(0);
+
+  async function handleWaitlist(e: React.FormEvent) {
+    e.preventDefault();
+    setStatus('loading');
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setStatus('success');
+        setCount(data.count);
+        setEmail('');
+      } else {
+        setStatus('error');
+      }
+    } catch {
+      setStatus('error');
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-purple-900/20 to-gray-900">
       {/* Top Navigation */}
@@ -13,6 +42,9 @@ export default function Home() {
             <div className="flex items-center gap-4">
               <Link href="/monitor" className="text-gray-300 hover:text-white transition-colors font-semibold">
                 Monitor
+              </Link>
+              <Link href="/docs" className="text-gray-300 hover:text-white transition-colors font-semibold">
+                Docs
               </Link>
               <Link href="/launch" className="px-6 py-2 text-sm font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all">
                 Launch Token
@@ -211,19 +243,31 @@ export default function Home() {
           </p>
           
           <div className="bg-gradient-to-r from-purple-900/30 to-pink-900/30 border border-purple-500/30 rounded-2xl p-8">
-            <form className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
-              <input
-                type="email"
-                placeholder="your@email.com"
-                className="flex-1 px-6 py-4 bg-black/50 border border-purple-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500"
-              />
-              <button
-                type="submit"
-                className="px-8 py-4 font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg shadow-purple-500/50"
-              >
-                Join Waitlist
-              </button>
-            </form>
+            {status === 'success' ? (
+              <div className="text-center">
+                <p className="text-green-400 text-xl font-semibold mb-2">You're in! #{count} on the waitlist.</p>
+                <p className="text-gray-400">We'll notify you when we go live on mainnet.</p>
+              </div>
+            ) : (
+              <form onSubmit={handleWaitlist} className="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="your@email.com"
+                  required
+                  className="flex-1 px-6 py-4 bg-black/50 border border-purple-500/30 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500"
+                />
+                <button
+                  type="submit"
+                  disabled={status === 'loading'}
+                  className="px-8 py-4 font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg shadow-purple-500/50 disabled:opacity-50"
+                >
+                  {status === 'loading' ? 'Joining...' : 'Join Waitlist'}
+                </button>
+              </form>
+            )}
+            {status === 'error' && <p className="text-red-400 text-sm mt-2">Something went wrong. Try again.</p>}
             <p className="text-sm text-gray-500 mt-4">
               No spam. Just launch updates and early access.
             </p>
