@@ -40,8 +40,14 @@ export default function Home() {
               pump.notdump.fun
             </Link>
             <div className="flex items-center gap-4">
-              <Link href="/monitor" className="text-gray-300 hover:text-white transition-colors font-semibold">
-                Monitor
+              <Link href="/scanner" className="text-gray-300 hover:text-white transition-colors font-semibold">
+                Scanner
+              </Link>
+              <Link href="/vote" className="text-gray-300 hover:text-white transition-colors font-semibold">
+                Vote
+              </Link>
+              <Link href="/leaderboard" className="text-gray-300 hover:text-white transition-colors font-semibold">
+                Leaderboard
               </Link>
               <Link href="/docs" className="text-gray-300 hover:text-white transition-colors font-semibold">
                 Docs
