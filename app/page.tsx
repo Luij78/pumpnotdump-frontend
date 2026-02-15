@@ -1,6 +1,26 @@
+import Link from 'next/link';
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 via-purple-900/20 to-gray-900">
+      {/* Top Navigation */}
+      <nav className="border-b border-gray-800">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
+              pump.notdump.fun
+            </Link>
+            <div className="flex items-center gap-4">
+              <Link href="/monitor" className="text-gray-300 hover:text-white transition-colors font-semibold">
+                Monitor
+              </Link>
+              <Link href="/launch" className="px-6 py-2 text-sm font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all">
+                Launch Token
+              </Link>
+            </div>
+          </div>
+        </div>
+      </nav>
       {/* Hero Section */}
       <section className="relative px-6 pt-20 pb-32 lg:px-8">
         <div className="mx-auto max-w-5xl text-center">
@@ -19,12 +39,12 @@ export default function Home() {
             Launch AI agent tokens with built-in vesting. No more rug pulls. Just fair, transparent token launches on Solana.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg shadow-purple-500/50">
-              Coming Soon
-            </button>
-            <button className="px-8 py-4 text-lg font-semibold text-white border-2 border-purple-500 rounded-lg hover:bg-purple-500/10 transition-all">
-              Learn More ↓
-            </button>
+            <Link href="/launch" className="px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all shadow-lg shadow-purple-500/50 text-center">
+              Launch Your Token
+            </Link>
+            <Link href="/monitor" className="px-8 py-4 text-lg font-semibold text-white border-2 border-purple-500 rounded-lg hover:bg-purple-500/10 transition-all text-center">
+              Browse Tokens →
+            </Link>
           </div>
         </div>
       </section>
